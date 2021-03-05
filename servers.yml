@@ -72,6 +72,7 @@ Resources:
           aws s3 cp s3://udagram-321723638230/udagram.zip .
           unzip -o udagram.zip
           rm udagram.zip
+          sudo chmod 755 -R index_files
           sudo service apache2 restart
           sudo yum install -y https://s3.region.amazonaws.com/amazon-ssm-region/latest/linux_amd64/amazon-ssm-agent.rpm
           sudo systemctl enable amazon-ssm-agent
