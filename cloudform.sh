@@ -10,12 +10,18 @@
 # Example: ./cloudform.sh delete stackName
 # Example: ./cloudform.sh update stackName servers.yml servers.json
 
-REGION="--region=us-east-1"
-CAPABILITIES='--capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"'
+PARAMS=$4
+REGION="us-east-1"
+CAPABILITIES='"CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"'
+if [ "$4" = "" ]; then
+	PARAMS=$3
+fi
 if [ "$1" = "create" ]; then
-	aws cloudformation create-stack --stack-name $2 --template-body file://$3  --parameters file://$4 $CAPABILITIES $REGION
+	aws cloudformation create-stack --stack-name $2 --template-body file://$3.yml  --parameters file://$PARAMS.json --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=$REGION
+fi
 if [ "$1" = "delete" ]; then
 	aws cloudformation delete-stack --stack-name $2
+fi
 if [ "$1" = "update" ]; then
-	aws cloudformation update-stack --stack-name $2 --template-body file://$3  --parameters file://$4 $CAPABILITIES $REGION
+	aws cloudformation update-stack --stack-name $2 --template-body file://$3.yml  --parameters file://$PARAMS.json --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=$REGION
 fi
